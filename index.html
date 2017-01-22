@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>HAPS</title>
+</head>
+<body>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCqaL1lvjEVm_mv9s5DNGHo0t41wGs2QXo&ampcallback=initMap"></script>
+    <script type="text/javascript">
+        window.onload = function () {
+        	var lati = 0;
+        	var longi = 0;
+            var mapOptions = {
+                center: new google.maps.LatLng(37.7749, -122.4194),
+                zoom: 14,
+                mapTypeId: google.maps.MapTypeId.ROADMAP
+            };
+            var infoWindow = new google.maps.InfoWindow();
+            var latlngbounds = new google.maps.LatLngBounds();
+            var map = new google.maps.Map(document.getElementById("dvMap"), mapOptions);
+            google.maps.event.addListener(map, 'click', function (e) {
+                alert("Latitude: " + e.latLng.lat() + "\r\nLongitude: " + e.latLng.lng());
+                var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + e.latLng.lat() + "," +  e.latLng.lng() + "&key=AIzaSyCqaL1lvjEVm_mv9s5DNGHo0t41wGs2QXo"
+					    var xmlHttp = new XMLHttpRequest();
+					    xmlHttp.open( "GET", url, false ); // false for synchronous request
+					    xmlHttp.send( null );
+					    var result = JSON.parse(xmlHttp.responseText);
+					    console.log(result);
+					    //console.log(result.results[0].address_components[6].short_name);
+					    //console.log(result.results.length);
+				 	    for (i =0; i < result.results.length; i++) {
+				 	    	//console.log(result.results[i].address_components[i].types[0]);
+				 	    	for(j=0; j < result.results[i].address_components.length; j++){ 
+					 	    	if(result.results[i].address_components[j].types[0] == 'country'){
+					 	    		console.log(result.results[i].address_components[j].short_name);
+					 	    		var country_name = result.results[i].address_components[j].short_name;
+					 	    		var country_name2 = result.results[i].address_components[j].long_name;
+					 	    		break;
+					 	    	}
+				 	    	}
+				 	    	break;
+				 	    }
+				 	    var url = "http://country.io/currency.json"
+				 	    var xmlHttp = new XMLHttpRequest();
+					    xmlHttp.open( "GET", url, false ); // false for synchronous request
+					    xmlHttp.send( null );
+					    var result = JSON.parse(xmlHttp.responseText);
+					    var currency = result[country_name];
+					    var url = "http://apilayer.net/api/live?access_key=8126cf636d8fbaa450949cea504a7c4f&currencies=" + currency + "&format=1"
+					    var xmlHttp = new XMLHttpRequest();
+					    xmlHttp.open( "GET", url, false ); // false for synchronous request
+					    xmlHttp.send( null );
+					    var result = JSON.parse(xmlHttp.responseText);
+					    console.log(result.quotes['USD'+currency]);
+					    // var latlng = {lat: parseFloat(e.latLng.lat()), lng: parseFloat(e.latLng.lng())};
+					    var marker = new google.maps.Marker({
+					    	position: {lat: e.latLng.lat(), lng: e.latLng.lng()},
+					    	map: map
+					    })
+					    infoWindow.setContent("1 U.S. dollar is " + result.quotes['USD'+currency] + " " + currency + " in " + country_name2);
+					    infoWindow.open(map, marker);
+            });
+        }
+    </script>
+    <div id="dvMap" style="width: 500px; height: 500px">
+    </div>
+</body>
+
+</html>
