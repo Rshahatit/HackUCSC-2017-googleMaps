@@ -4,7 +4,7 @@
     <title>HAPS</title>
 </head>
 <body>
-    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyCqaL1lvjEVm_mv9s5DNGHo0t41wGs2QXo&ampcallback=initMap"></script>
+    <script type="text/javascript" src="http://maps.googleapis.com/maps/api/js?key=AIzaSyB7aRvf72Q7uBe3KW7-PwzGD8J62lzcDkM&ampcallback=initMap"></script>
     <script type="text/javascript">
         window.onload = function () {
         	var lati = 0;
@@ -19,7 +19,7 @@
             var map = new google.maps.Map(document.getElementById("dvMap"), mapOptions);
             google.maps.event.addListener(map, 'click', function (e) {
                 alert("Latitude: " + e.latLng.lat() + "\r\nLongitude: " + e.latLng.lng());
-                var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + e.latLng.lat() + "," +  e.latLng.lng() + "&key=AIzaSyCqaL1lvjEVm_mv9s5DNGHo0t41wGs2QXo"
+                var url = "https://maps.googleapis.com/maps/api/geocode/json?latlng=" + e.latLng.lat() + "," +  e.latLng.lng() + "&key=AIzaSyB7aRvf72Q7uBe3KW7-PwzGD8J62lzcDkM"
 					    var xmlHttp = new XMLHttpRequest();
 					    xmlHttp.open( "GET", url, false ); // false for synchronous request
 					    xmlHttp.send( null );
